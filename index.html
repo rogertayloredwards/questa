@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#101917">
+  <meta name="description" content="Project Questa is an independent accessibility-focused companion for The Lord of the Rings Online, bringing quest dialogue to life through spoken narration. Follow development updates here.">
+  <title>Project Questa — LOTRO quest narration</title>
+  <style>
+    :root {
+      --bg: #101917;
+      --panel: #192421;
+      --panel-2: #202c28;
+      --text: #f0efe6;
+      --muted: #b5c0b7;
+      --gold: #ddbd75;
+      --line: #3b4a40;
+      --green: #92baa0;
+      --max: 1050px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse 90% 55% at 88% 2%, rgba(114, 137, 97, .15), transparent 68%),
+        radial-gradient(ellipse 50% 40% at 10% 38%, rgba(173, 140, 77, .06), transparent 70%),
+        var(--bg);
+      font: 17px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    a:focus-visible { outline: 2px solid var(--gold); outline-offset: 5px; }
+    .wrap { width: min(var(--max), calc(100% - 48px)); margin: auto; }
+    header { border-bottom: 1px solid rgba(221,189,117,.16); }
+    .nav { min-height: 89px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { display: inline-flex; align-items: center; gap: 13px; font-weight: 700; letter-spacing: .17em; text-decoration: none; font-size: 14px; }
+    .brand-mark { width: 37px; height: 37px; display: grid; place-items: center; border: 1px solid var(--gold); color: var(--gold); border-radius: 50%; font: 25px Georgia, serif; letter-spacing: 0; }
+    .nav-link { font-size: 13px; color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; }
+    .nav-link:hover { color: var(--gold); border-color: var(--gold); }
+    .hero-art { margin: 30px 0 0; border: 1px solid rgba(221,189,117,.26); border-radius: 8px; overflow: hidden; background: #1c2521; box-shadow: 0 24px 70px rgba(0, 0, 0, .22); }
+    .hero-art img { display: block; width: 100%; height: auto; }
+    .hero { padding: clamp(36px, 6vw, 69px) 0 77px; position: relative; }
+    .video-actions { margin-top: 25px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 22px; }
+    .video-button { display: inline-flex; align-items: center; justify-content: center; gap: 11px; min-height: 47px; padding: 11px 20px; border: 1px solid var(--gold); border-radius: 5px; color: #132019; background: var(--gold); font-size: 14px; font-weight: 750; text-decoration: none; transition: background .15s ease, border-color .15s ease; }
+    .video-button:hover { background: #f1d290; border-color: #f1d290; }
+    .video-button:focus-visible { outline: 3px solid #fff4c4; outline-offset: 4px; }
+    .video-button .play-icon { font-size: 13px; line-height: 1; }
+    .video-explainer { max-width: 450px; font-size: 13px; line-height: 1.55; color: var(--muted); margin: 0; }
+    .eyebrow { display: flex; align-items: center; gap: 13px; color: var(--gold); font-size: 12px; letter-spacing: .23em; text-transform: uppercase; font-weight: 700; }
+    .eyebrow::before { content: ""; width: 38px; height: 1px; background: var(--gold); }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 400; }
+    h1 { max-width: 900px; margin: 24px 0 25px; font-size: clamp(58px, 8vw, 112px); line-height: 1.06; letter-spacing: -.055em; }
+    h1 em { font-weight: 400; color: var(--gold); }
+    .intro { max-width: 700px; font-size: clamp(18px, 2.2vw, 22px); color: #d4dcd3; line-height: 1.7; }
+    .hero-bottom { margin-top: 43px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .pill { display: inline-flex; align-items: center; gap: 9px; padding: 10px 16px; border-radius: 100px; border: 1px solid #46604e; background: #20352a; font-size: 13px; color: #dcebdc; }
+    .dot { height: 7px; width: 7px; border-radius: 50%; background: #9fce9c; box-shadow: 0 0 0 4px rgba(159,206,156,.09); }
+    .hero-note { color: var(--muted); font-size: 14px; }
+    .rule { border: none; border-top: 1px solid var(--line); margin: 0; }
+    section { padding: 65px 0; }
+    .section-kicker { color: var(--gold); font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 12px; }
+    h2 { font-size: clamp(32px, 5vw, 49px); line-height: 1.18; letter-spacing: -.025em; margin-bottom: 18px; }
+    .section-lead { color: var(--muted); max-width: 700px; line-height: 1.75; }
+    .feature { display: grid; grid-template-columns: 1.06fr .94fr; gap: clamp(28px, 5vw, 72px); align-items: start; }
+    .focus-card { padding: 30px 32px; border-radius: 6px; border: 1px solid var(--line); background: linear-gradient(155deg, #22312a, #18231f); }
+    .mini-label { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 800; }
+    .focus-card h3 { font: normal 29px Georgia, serif; margin: 15px 0 12px; }
+    .focus-card p { font-size: 15px; color: #c9d3ca; margin: 0; }
+    .scope { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 33px; }
+    .scope-item { min-height: 200px; background: rgba(32,44,40,.72); border: 1px solid var(--line); border-radius: 6px; padding: 24px; }
+    .scope-item .number { color: var(--gold); font: 20px Georgia, serif; }
+    .scope-item h3 { margin: 14px 0 6px; font: normal 22px Georgia, serif; }
+    .scope-item p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .update { border-left: 2px solid var(--gold); padding: 3px 0 3px 27px; margin-top: 30px; max-width: 770px; }
+    .update time { color: var(--gold); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+    .update p { margin: 13px 0 0; color: #d2dcd2; }
+    .no-deadline { margin-top: 28px; color: var(--muted); font-size: 14px; }
+    footer { border-top: 1px solid var(--line); padding: 31px 0 45px; color: #aab8ac; font-size: 12px; }
+    footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px 30px; }
+    footer a { color: var(--gold); text-decoration-color: #7d7454; text-underline-offset: 3px; }
+    @media (max-width: 750px) {
+      .feature, .scope { grid-template-columns: 1fr; }
+      .scope-item { min-height: auto; }
+      section { padding: 48px 0; }
+      .hero { padding: 40px 0 60px; }
+      .hero-art { margin-top: 18px; }
+      .video-button { width: 100%; }
+      .video-explainer { max-width: none; }
+      h1 { font-size: clamp(54px, 14vw, 80px); }
+      .focus-card { padding: 25px; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav wrap" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Project Questa homepage"><span class="brand-mark" aria-hidden="true">Q</span> QUESTA</a>
+      <a class="nav-link" href="#updates">Development updates</a>
+    </nav>
+  </header>
+  <main id="top">
+    <div class="wrap">
+      <figure class="hero-art">
+        <img src="assets/questa-banner.webp" width="1920" height="1080" alt="Project Questa: Giving Middle-earth a Voice, illustrated over a landscape from The Lord of the Rings Online." fetchpriority="high" decoding="async">
+      </figure>
+      <div class="hero">
+        <p class="eyebrow">Project Questa · An independent LOTRO companion</p>
+        <h1>Let the quests <em>speak.</em></h1>
+        <p class="intro">Questa is an accessibility-focused Windows utility in development for <i>The Lord of the Rings Online</i>. Its purpose is to bring quest dialogue to life through natural-sounding spoken narration.</p>
+        <div class="hero-bottom">
+          <span class="pill"><span class="dot" aria-hidden="true"></span> In active development</span>
+          <span class="hero-note">Private testing underway · No public download yet</span>
+        </div>
+        <div class="video-actions">
+          <a class="video-button" href="https://www.youtube.com/playlist?list=PLJqIkx9a6X5U4mhll7pSfnFugC7D21DYK" target="_blank" rel="noopener noreferrer" aria-label="Watch Project Questa development videos on YouTube (opens in a new tab)"><span class="play-icon" aria-hidden="true">▶</span> Watch development videos <span aria-hidden="true">↗</span></a>
+          <p class="video-explainer">See demonstrations and progress reports from private testing. These videos are not announcements of a public release.</p>
+        </div>
+      </div>
+    </div>
+    <hr class="rule">
+    <section aria-labelledby="about-title">
+      <div class="wrap feature">
+        <div>
+          <p class="section-kicker">The project</p>
+          <h2 id="about-title">More listening. Less reading.</h2>
+          <p class="section-lead">LOTRO has a wealth of stories to tell. Questa aims to make those stories easier to enjoy by reading quest text aloud while you play, with an emphasis on clarity, natural delivery and straightforward operation.</p>
+          <p class="section-lead">Development is proceeding in stages. Only finished, tested resources will be made available for download.</p>
+        </div>
+        <aside class="focus-card" aria-label="Current development focus">
+          <span class="mini-label">Current focus</span>
+          <h3>Narrator Mode</h3>
+          <p>The standalone narration core is functioning in private tests. Work now centres on refining the user experience, including pronunciation corrections, a choice of voices and simple audio settings.</p>
+        </aside>
+      </div>
+    </section>
+    <hr class="rule">
+    <section aria-labelledby="directions-title">
+      <div class="wrap">
+        <p class="section-kicker">The wider vision</p>
+        <h2 id="directions-title">One project. Different ways to listen.</h2>
+        <p class="section-lead">The immediate priority is a reliable narrator. Other approaches are being explored, but these are not announcements of public releases.</p>
+        <div class="scope">
+          <article class="scope-item">
+            <span class="number">01</span>
+            <h3>Narrator Mode</h3>
+            <p>One consistent voice reading quest dialogue. The current focus of standalone testing and refinement.</p>
+          </article>
+          <article class="scope-item">
+            <span class="number">02</span>
+            <h3>Character Mode</h3>
+            <p>Exploring the use of different voices to give more personality to the characters you meet.</p>
+          </article>
+          <article class="scope-item">
+            <span class="number">03</span>
+            <h3>Performance Mode</h3>
+            <p>A longer-term idea for specially prepared narration, intended to provide a more performed experience.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <hr class="rule">
+    <section id="updates" aria-labelledby="updates-title">
+      <div class="wrap">
+        <p class="section-kicker">Development notes</p>
+        <h2 id="updates-title">Progress, not promises.</h2>
+        <p class="section-lead">This page will be updated when there is something meaningful to report. No release date or delivery timetable has been announced.</p>
+        <article class="update">
+          <time datetime="2026-11-15">15 November 2026</time>
+          <p>Standalone Narrator Mode has completed successful internal quest-narration tests. Current work is focused on user-facing improvements: an integrated pronunciation editor, narrator voice selection and volume controls.</p>
+        </article>
+        <p class="no-deadline">Public downloads and installation instructions will appear here only when a release is ready.</p>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="wrap">
+      <span>Project Questa · An independent, fan-made accessibility project by Roger Taylor Edwards.</span>
+      <span>Not affiliated with or endorsed by Standing Stone Games or the owners of <i>The Lord of the Rings Online</i>. <a href="https://github.com/rogertayloredwards">GitHub profile</a></span>
+    </div>
+  </footer>
+</body>
+</html>
