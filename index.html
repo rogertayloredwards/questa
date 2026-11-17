@@ -78,6 +78,12 @@
     .update { border-left: 2px solid var(--gold); padding: 3px 0 3px 27px; margin-top: 30px; max-width: 770px; }
     .update time { color: var(--gold); font-size: 13px; font-weight: 700; letter-spacing: .04em; }
     .update p { margin: 13px 0 0; color: #d2dcd2; }
+    .update h3 { font: normal 25px/1.25 Georgia, serif; margin: 12px 0 0; }
+    .demo-video { margin: 24px 0 0; max-width: 740px; }
+    .demo-video-frame { overflow: hidden; border: 1px solid var(--line); border-radius: 7px; aspect-ratio: 16 / 9; background: #0c1412; }
+    .demo-video-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+    .demo-video figcaption { margin-top: 11px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .demo-video a { color: var(--gold); text-underline-offset: 3px; }
     .no-deadline { margin-top: 28px; color: var(--muted); font-size: 14px; }
     footer { border-top: 1px solid var(--line); padding: 31px 0 45px; color: #aab8ac; font-size: 12px; }
     footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px 30px; }
@@ -134,7 +140,7 @@
         <aside class="focus-card" aria-label="Current development focus">
           <span class="mini-label">Current focus</span>
           <h3>Narrator Mode</h3>
-          <p>The standalone narration core is functioning in private tests. Work now centres on refining the user experience, including pronunciation corrections, a choice of voices and simple audio settings.</p>
+          <p>The portable RC3 build has passed a further round of private testing, including narration on two different Windows computers. Voice and monitor selection, pronunciation corrections and a safer stop control are now part of the tested interface. Packaging and release preparation are the next priorities.</p>
         </aside>
       </div>
     </section>
@@ -148,7 +154,7 @@
           <article class="scope-item">
             <span class="number">01</span>
             <h3>Narrator Mode</h3>
-            <p>One consistent voice reading quest dialogue. The current focus of standalone testing and refinement.</p>
+            <p>Quest dialogue spoken by a selectable narrator voice. A portable build is undergoing final refinement and release preparation.</p>
           </article>
           <article class="scope-item">
             <span class="number">02</span>
@@ -169,6 +175,19 @@
         <p class="section-kicker">Development notes</p>
         <h2 id="updates-title">Progress, not promises.</h2>
         <p class="section-lead">This page will be updated when there is something meaningful to report. No release date or delivery timetable has been announced.</p>
+        <article class="update">
+          <time datetime="2026-11-17">17 November 2026</time>
+          <h3>RC3: another milestone for Narrator Mode</h3>
+          <p>The portable Narrator Mode RC3 build has now completed successful private tests on both a desktop PC and a laptop. The latest desktop test also completed three quest narrations successfully, with normal start and stop behaviour.</p>
+          <p>The improved Settings window brings together narrator voice choice, monitor selection and audio controls, alongside the pronunciation and text-correction editor. A dedicated <strong>Stop Narrator</strong> control has been added. A recently encountered quest passage, previously missed when green text appeared partway through the dialogue, is now spoken correctly.</p>
+          <p>These are encouraging results for the standalone core. The next step is preparing a straightforward way to install and use Questa; it remains a private development build, with no public release date yet.</p>
+          <figure class="demo-video">
+            <div class="demo-video-frame">
+              <iframe src="https://www.youtube-nocookie.com/embed/sVJuKqecvgo" title="Project Questa — 17 November 2026 RC3 development demonstration" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+            <figcaption>Latest development video: the RC3 private test. <a href="https://youtu.be/sVJuKqecvgo" target="_blank" rel="noopener noreferrer">Watch on YouTube</a> if you prefer to open it separately.</figcaption>
+          </figure>
+        </article>
         <article class="update">
           <time datetime="2026-11-15">15 November 2026</time>
           <p>Standalone Narrator Mode has completed successful internal quest-narration tests. Current work is focused on user-facing improvements: an integrated pronunciation editor, narrator voice selection and volume controls.</p>
